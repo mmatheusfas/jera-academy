@@ -28,13 +28,13 @@ void main() {
   });
 
   test("Test if the function startTimer is working as expected, changing the timeStarted and activating the timer", () {
-    controller.startTimer(timerModel, timer);
+    controller.startTimer(timerModel);
 
     expect(timerModel.timerStarted, true);
   });
 
   test("Test if the function timerDecrement is working as expected decrementing one by one", () async {
-    controller.startTimer(timerModel, timer);
+    controller.startTimer(timerModel);
     var result = controller.decrementSeconds(timerModel);
 
     Future.delayed(const Duration(seconds: 5)).then((value) {

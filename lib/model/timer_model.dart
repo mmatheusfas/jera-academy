@@ -1,9 +1,9 @@
 class TimerModel {
   bool timerStarted;
-  int timerGoal;
+  int? timerGoal;
 
   TimerModel({
     this.timerStarted = false,
-    this.timerGoal = 2,
+    this.timerGoal,
   });
 }

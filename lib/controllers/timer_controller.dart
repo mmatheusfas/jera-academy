@@ -7,30 +7,34 @@ class TimerController = TimerControllerBase with _$TimerController;
 
 abstract class TimerControllerBase with Store {
   Timer? countDownTimer;
-  Duration duration = const Duration();
-  int cycles = 0;
   TimerModel timer = TimerModel();
   int auxiliar = 0;
+  @observable
+  Duration duration = const Duration();
+  @observable
+  int cycles = 0;
 
+  @action
   Duration initializeDuration(int? userDuration, bool isIntervalParam) {
     if (isIntervalParam) {
-      return duration = const Duration(minutes: 5);
+      return duration = const Duration(seconds: 20);
     } else {
+      //LONG INTERVAL
       if (cycles != 0 && cycles % 4 == 0) {
-        return duration = const Duration(minutes: 10);
+        return duration = const Duration(seconds: 21);
       }
     }
     if (userDuration != null) {
       return duration = Duration(minutes: userDuration);
     }
-    return duration = const Duration(minutes: 25);
+    return duration = const Duration(seconds: 2);
   }
 
   String twoDigitsFormater(int time) {
     return time.toString().padLeft(2, '0');
   }
 
-  startTimer(TimerModel timerModel, Timer? timer) {
+  startTimer(TimerModel timerModel) {
     timerModel.timerStarted = !timerModel.timerStarted;
     initializeDuration(timerModel.timerGoal, false);
     countDownTimer = Timer.periodic(const Duration(seconds: 1), (_) => decrementSeconds(timerModel));
@@ -43,17 +47,20 @@ abstract class TimerControllerBase with Store {
     }
   }
 
+  @action
   Duration decrementSeconds(TimerModel timerModel) {
     var reduceSecondsBy = 1;
     var seconds = duration.inSeconds - reduceSecondsBy;
 
     if (seconds == 0) {
-      initializeDuration(null, auxiliar % 2 == 0 ? false : true);
+      initializeDuration(null, auxiliar % 2 == 0 && auxiliar != 0 ? false : true);
       incrementCyle();
+      stopTimer(timerModel);
+
+      return duration;
     } else {
       return duration = Duration(seconds: seconds);
     }
-    throw Exception();
   }
 
   incrementCyle() {
