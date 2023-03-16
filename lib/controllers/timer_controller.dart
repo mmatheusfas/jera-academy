@@ -1,7 +1,11 @@
 import 'dart:async';
 import 'package:pomodoro_jera/model/timer_model.dart';
+import 'package:mobx/mobx.dart';
+part 'timer_controller.g.dart';
 
-class TimerController {
+class TimerController = TimerControllerBase with _$TimerController;
+
+abstract class TimerControllerBase with Store {
   Timer? countDownTimer;
   Duration duration = const Duration();
   int cycles = 0;
