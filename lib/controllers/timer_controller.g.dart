@@ -9,6 +9,22 @@ part of 'timer_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$TimerController on TimerControllerBase, Store {
+  late final _$isIntervalAtom =
+      Atom(name: 'TimerControllerBase.isInterval', context: context);
+
+  @override
+  bool get isInterval {
+    _$isIntervalAtom.reportRead();
+    return super.isInterval;
+  }
+
+  @override
+  set isInterval(bool value) {
+    _$isIntervalAtom.reportWrite(value, super.isInterval, () {
+      super.isInterval = value;
+    });
+  }
+
   late final _$durationAtom =
       Atom(name: 'TimerControllerBase.duration', context: context);
 
@@ -25,19 +41,19 @@ mixin _$TimerController on TimerControllerBase, Store {
     });
   }
 
-  late final _$cyclesAtom =
-      Atom(name: 'TimerControllerBase.cycles', context: context);
+  late final _$totalCyclesAtom =
+      Atom(name: 'TimerControllerBase.totalCycles', context: context);
 
   @override
-  int get cycles {
-    _$cyclesAtom.reportRead();
-    return super.cycles;
+  int get totalCycles {
+    _$totalCyclesAtom.reportRead();
+    return super.totalCycles;
   }
 
   @override
-  set cycles(int value) {
-    _$cyclesAtom.reportWrite(value, super.cycles, () {
-      super.cycles = value;
+  set totalCycles(int value) {
+    _$totalCyclesAtom.reportWrite(value, super.totalCycles, () {
+      super.totalCycles = value;
     });
   }
 
@@ -69,8 +85,9 @@ mixin _$TimerController on TimerControllerBase, Store {
   @override
   String toString() {
     return '''
+isInterval: ${isInterval},
 duration: ${duration},
-cycles: ${cycles}
+totalCycles: ${totalCycles}
     ''';
   }
 }
