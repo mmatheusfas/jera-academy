@@ -9,6 +9,22 @@ part of 'timer_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$TimerController on TimerControllerBase, Store {
+  late final _$isLongIntervalAtom =
+      Atom(name: 'TimerControllerBase.isLongInterval', context: context);
+
+  @override
+  bool get isLongInterval {
+    _$isLongIntervalAtom.reportRead();
+    return super.isLongInterval;
+  }
+
+  @override
+  set isLongInterval(bool value) {
+    _$isLongIntervalAtom.reportWrite(value, super.isLongInterval, () {
+      super.isLongInterval = value;
+    });
+  }
+
   late final _$isIntervalAtom =
       Atom(name: 'TimerControllerBase.isInterval', context: context);
 
@@ -61,11 +77,12 @@ mixin _$TimerController on TimerControllerBase, Store {
       ActionController(name: 'TimerControllerBase', context: context);
 
   @override
-  Duration initializeDuration(int? userDuration, bool isIntervalParam) {
+  Duration initializeDuration(
+      int? userDuration, bool isIntervalParam, TimerModel model) {
     final _$actionInfo = _$TimerControllerBaseActionController.startAction(
         name: 'TimerControllerBase.initializeDuration');
     try {
-      return super.initializeDuration(userDuration, isIntervalParam);
+      return super.initializeDuration(userDuration, isIntervalParam, model);
     } finally {
       _$TimerControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -83,8 +100,20 @@ mixin _$TimerController on TimerControllerBase, Store {
   }
 
   @override
+  dynamic incrementCyle() {
+    final _$actionInfo = _$TimerControllerBaseActionController.startAction(
+        name: 'TimerControllerBase.incrementCyle');
+    try {
+      return super.incrementCyle();
+    } finally {
+      _$TimerControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
+isLongInterval: ${isLongInterval},
 isInterval: ${isInterval},
 duration: ${duration},
 totalCycles: ${totalCycles}

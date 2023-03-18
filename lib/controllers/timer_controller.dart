@@ -8,27 +8,28 @@ class TimerController = TimerControllerBase with _$TimerController;
 abstract class TimerControllerBase with Store {
   Timer? countDownTimer;
   int auxiliar = 0;
-  bool isLongInterval = false;
   int cycles = 0;
 
   @observable
+  bool isLongInterval = false;
+  @observable
   bool isInterval = false;
   @observable
-  Duration duration = const Duration();
+  Duration duration = const Duration(seconds: 4);
   @observable
   int totalCycles = 0;
 
   @action
-  Duration initializeDuration(int? userDuration, bool isIntervalParam) {
+  Duration initializeDuration(int? userDuration, bool isIntervalParam, TimerModel model) {
     if (isIntervalParam && auxiliar % 2 != 0) {
       isInterval = true;
-      return duration = const Duration(seconds: 2);
+      return duration = const Duration(seconds: 5);
     } else {
-      //LONG INTERVAL
-      if (cycles != 0 && cycles % 4 == 0) {
+      if (cycles != 0 && cycles % 4 == 0 && isInterval) {
         isInterval = false;
         isLongInterval = true;
-        return duration = const Duration(seconds: 4);
+
+        return duration = const Duration(seconds: 10);
       }
     }
     if (userDuration != null) {
@@ -36,11 +37,7 @@ abstract class TimerControllerBase with Store {
       return duration = Duration(minutes: userDuration);
     }
     isInterval = false;
-    return duration = const Duration(minutes: 1);
-  }
-
-  String twoDigitsFormater(int time) {
-    return time.toString().padLeft(2, '0');
+    return duration = const Duration(seconds: 4);
   }
 
   startTimer(TimerModel timerModel) {
@@ -50,7 +47,7 @@ abstract class TimerControllerBase with Store {
       timerModel.itsPaused = false;
       countDownTimer = Timer.periodic(const Duration(seconds: 1), (_) => decrementSeconds(timerModel));
     } else {
-      initializeDuration(timerModel.timerGoal, isInterval ? true : false);
+      initializeDuration(timerModel.timerGoal, isInterval ? true : false, timerModel);
       countDownTimer = Timer.periodic(const Duration(seconds: 1), (_) => decrementSeconds(timerModel));
     }
   }
@@ -63,6 +60,16 @@ abstract class TimerControllerBase with Store {
     }
   }
 
+  restartTimer(TimerModel timerModel) {
+    if (timerModel.itsPaused || isLongInterval) {
+      isLongInterval = false;
+      countDownTimer!.cancel();
+      initializeDuration(timerModel.timerGoal, false, timerModel);
+    } else {
+      countDownTimer!.cancel();
+    }
+  }
+
   @action
   Duration decrementSeconds(TimerModel timerModel) {
     var seconds = duration.inSeconds;
@@ -70,16 +77,16 @@ abstract class TimerControllerBase with Store {
 
     if (seconds == 0) {
       incrementCyle();
-      initializeDuration(timerModel.timerGoal, auxiliar % 2 == 0 && auxiliar != 0 ? false : true);
+      initializeDuration(timerModel.timerGoal, auxiliar % 2 == 0 && auxiliar != 0 ? false : true, timerModel);
       stopTimer(timerModel);
       return duration;
     } else {
       duration = Duration(seconds: seconds);
-      print("Duration ${duration.inMinutes.remainder(60)}:${duration.inSeconds.remainder(60)}");
       return duration;
     }
   }
 
+  @action
   incrementCyle() {
     if (!isLongInterval) {
       if (auxiliar == 0) {
