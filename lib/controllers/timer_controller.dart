@@ -17,6 +17,8 @@ abstract class TimerControllerBase with Store {
   NotificationController notificationController = NotificationController();
 
   @observable
+  var totalDuration = 0;
+  @observable
   bool isLongInterval = false;
   @observable
   bool isInterval = false;
@@ -29,21 +31,28 @@ abstract class TimerControllerBase with Store {
   Duration initializeDuration(int? userDuration, bool isIntervalParam) {
     if (isIntervalParam && auxiliar % 2 != 0) {
       isInterval = true;
-      return duration = const Duration(seconds: 5);
+      duration = const Duration(seconds: 5);
+      totalDuration = duration.inSeconds;
+      return duration;
     } else {
       if (cycles != 0 && cycles % 4 == 0 && isInterval) {
         isInterval = false;
         isLongInterval = true;
-
-        return duration = const Duration(seconds: 10);
+        duration = const Duration(seconds: 10);
+        totalDuration = duration.inSeconds;
+        return duration;
       }
     }
     if (userDuration != null) {
       isInterval = false;
-      return duration = Duration(minutes: userDuration);
+      duration = Duration(minutes: userDuration);
+      totalDuration = duration.inSeconds;
+      return duration;
     }
     isInterval = false;
-    return duration = const Duration(seconds: 4);
+    duration = const Duration(seconds: 4);
+    totalDuration = duration.inSeconds;
+    return duration;
   }
 
   playAudio() async {
