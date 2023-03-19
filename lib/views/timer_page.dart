@@ -17,7 +17,7 @@ class _TimerPageState extends State<TimerPage> {
   Duration duration = const Duration(minutes: 25);
   TimerModel userModel = TimerModel();
 
-  void openDialog(BuildContext context, TimerModel timerModel, TimerController controller) {
+  void _openDialog(BuildContext context, TimerModel timerModel, TimerController controller) {
     showDialog(
       context: context,
       builder: (context) {
@@ -117,9 +117,10 @@ class _TimerPageState extends State<TimerPage> {
                   height: 300,
                   padding: const EdgeInsets.all(5),
                   child: Observer(builder: (context) {
+                    var value = controller.duration.inSeconds.toDouble() / controller.totalDuration.toDouble();
                     return CircularProgressIndicator(
                       color: Colors.white,
-                      value: controller.duration.inSeconds.toDouble() / controller.totalDuration.toDouble(),
+                      value: controller.totalDuration == 0 ? 1 : value,
                       backgroundColor: Colors.grey,
                       strokeWidth: 15,
                     );
@@ -172,7 +173,7 @@ class _TimerPageState extends State<TimerPage> {
                               ),
                               onPressed: () {
                                 if (controller.isLongInterval) {
-                                  openDialog(context, userModel, controller);
+                                  _openDialog(context, userModel, controller);
                                   return;
                                 }
                                 controller.startTimer(userModel);
