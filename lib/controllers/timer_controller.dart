@@ -26,7 +26,7 @@ abstract class TimerControllerBase with Store {
   int totalCycles = 0;
 
   @action
-  Duration initializeDuration(int? userDuration, bool isIntervalParam, TimerModel model) {
+  Duration initializeDuration(int? userDuration, bool isIntervalParam) {
     if (isIntervalParam && auxiliar % 2 != 0) {
       isInterval = true;
       return duration = const Duration(seconds: 5);
@@ -47,7 +47,7 @@ abstract class TimerControllerBase with Store {
   }
 
   playAudio() async {
-    await player!.play(AssetSource("alarme.mp3"));
+    await player!.play(AssetSource("alarme.wav"));
   }
 
   startTimer(TimerModel timerModel) {
@@ -58,7 +58,7 @@ abstract class TimerControllerBase with Store {
       timerModel.itsPaused = false;
       countDownTimer = Timer.periodic(const Duration(seconds: 1), (_) => decrementSeconds(timerModel));
     } else {
-      initializeDuration(timerModel.timerGoal, isInterval ? true : false, timerModel);
+      initializeDuration(timerModel.timerGoal, isInterval ? true : false);
       countDownTimer = Timer.periodic(const Duration(seconds: 1), (_) => decrementSeconds(timerModel));
     }
   }
@@ -75,7 +75,7 @@ abstract class TimerControllerBase with Store {
     if (timerModel.itsPaused || isLongInterval) {
       isLongInterval = false;
       countDownTimer!.cancel();
-      initializeDuration(timerModel.timerGoal, false, timerModel);
+      initializeDuration(timerModel.timerGoal, false);
     } else {
       countDownTimer!.cancel();
     }
@@ -90,7 +90,7 @@ abstract class TimerControllerBase with Store {
       notificationController.showNotification(title: "Timer", body: "Your timer has ended", plugin: notification);
       playAudio();
       incrementCyle();
-      initializeDuration(timerModel.timerGoal, auxiliar % 2 == 0 && auxiliar != 0 ? false : true, timerModel);
+      initializeDuration(timerModel.timerGoal, auxiliar % 2 == 0 && auxiliar != 0 ? false : true);
       stopTimer(timerModel);
       return duration;
     } else {

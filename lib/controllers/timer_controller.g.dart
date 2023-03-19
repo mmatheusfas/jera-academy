@@ -77,12 +77,11 @@ mixin _$TimerController on TimerControllerBase, Store {
       ActionController(name: 'TimerControllerBase', context: context);
 
   @override
-  Duration initializeDuration(
-      int? userDuration, bool isIntervalParam, TimerModel model) {
+  Duration initializeDuration(int? userDuration, bool isIntervalParam) {
     final _$actionInfo = _$TimerControllerBaseActionController.startAction(
         name: 'TimerControllerBase.initializeDuration');
     try {
-      return super.initializeDuration(userDuration, isIntervalParam, model);
+      return super.initializeDuration(userDuration, isIntervalParam);
     } finally {
       _$TimerControllerBaseActionController.endAction(_$actionInfo);
     }
