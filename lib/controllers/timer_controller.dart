@@ -114,7 +114,7 @@ abstract class TimerControllerBase with Store {
   }
 
   dynamicNotification() {
-    if (isInterval) {
+    if (isInterval || isLongInterval) {
       notificationController.showNotification(
         title: "Timer",
         body: "Your interval time has ended, it's time to focus",
