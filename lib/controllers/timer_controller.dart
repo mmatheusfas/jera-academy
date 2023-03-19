@@ -79,6 +79,10 @@ abstract class TimerControllerBase with Store {
     await player!.stop();
   }
 
+  setCountDownTimer(TimerModel timerModel) {
+    countDownTimer = Timer.periodic(const Duration(seconds: 1), (_) => decrementSeconds(timerModel));
+  }
+
   startTimer(TimerModel timerModel) {
     notificationController.initializeNotification(notification);
     stopAudio();
@@ -89,10 +93,10 @@ abstract class TimerControllerBase with Store {
       timerModel.timerStarted = !timerModel.timerStarted;
       if (timerModel.itsPaused) {
         timerModel.itsPaused = false;
-        countDownTimer = Timer.periodic(const Duration(seconds: 1), (_) => decrementSeconds(timerModel));
+        setCountDownTimer(timerModel);
       } else {
         initializeDuration(timerModel.timerGoal, isInterval ? true : false);
-        countDownTimer = Timer.periodic(const Duration(seconds: 1), (_) => decrementSeconds(timerModel));
+        setCountDownTimer(timerModel);
       }
     }
   }
