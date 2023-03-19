@@ -44,7 +44,7 @@ abstract class TimerControllerBase with Store {
 
   Duration setIntervalDuration() {
     isInterval = true;
-    duration = const Duration(seconds: 3);
+    duration = const Duration(minutes: 5);
     totalDuration = duration.inSeconds;
     return duration;
   }
@@ -52,7 +52,7 @@ abstract class TimerControllerBase with Store {
   Duration setLongIntervalDuration() {
     isInterval = false;
     isLongInterval = true;
-    duration = const Duration(seconds: 5);
+    duration = const Duration(minutes: 10);
     totalDuration = duration.inSeconds;
     return duration;
   }
@@ -66,7 +66,7 @@ abstract class TimerControllerBase with Store {
 
   Duration userDurationNull() {
     isInterval = false;
-    duration = const Duration(seconds: 6);
+    duration = const Duration(minutes: 25);
     totalDuration = duration.inSeconds;
     return duration;
   }
