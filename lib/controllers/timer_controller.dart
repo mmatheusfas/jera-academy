@@ -31,14 +31,14 @@ abstract class TimerControllerBase with Store {
   Duration initializeDuration(int? userDuration, bool isIntervalParam) {
     if (isIntervalParam && auxiliar % 2 != 0) {
       isInterval = true;
-      duration = const Duration(seconds: 5);
+      duration = const Duration(seconds: 2);
       totalDuration = duration.inSeconds;
       return duration;
     } else {
       if (cycles != 0 && cycles % 4 == 0 && isInterval) {
         isInterval = false;
         isLongInterval = true;
-        duration = const Duration(seconds: 10);
+        duration = const Duration(seconds: 4);
         totalDuration = duration.inSeconds;
         return duration;
       }
@@ -96,7 +96,7 @@ abstract class TimerControllerBase with Store {
     seconds--;
 
     if (seconds == 0) {
-      notificationController.showNotification(title: "Timer", body: "Your timer has ended", plugin: notification);
+      dynamicNotification();
       playAudio();
       incrementCyle();
       initializeDuration(timerModel.timerGoal, auxiliar % 2 == 0 && auxiliar != 0 ? false : true);
@@ -105,6 +105,22 @@ abstract class TimerControllerBase with Store {
     } else {
       duration = Duration(seconds: seconds);
       return duration;
+    }
+  }
+
+  dynamicNotification() {
+    if (isInterval) {
+      notificationController.showNotification(
+        title: "Timer",
+        body: "Your interval time has ended, it's time to focus",
+        plugin: notification,
+      );
+    } else {
+      notificationController.showNotification(
+        title: "Timer",
+        body: "Your focus time has ended, it's time to relax",
+        plugin: notification,
+      );
     }
   }
 
