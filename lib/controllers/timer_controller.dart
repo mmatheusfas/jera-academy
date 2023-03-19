@@ -30,27 +30,43 @@ abstract class TimerControllerBase with Store {
   @action
   Duration initializeDuration(int? userDuration, bool isIntervalParam) {
     if (isIntervalParam && auxiliar % 2 != 0) {
-      isInterval = true;
-      duration = const Duration(seconds: 5);
-      totalDuration = duration.inSeconds;
-      return duration;
+      return setIntervalDuration();
     } else {
       if (cycles != 0 && cycles % 4 == 0 && isInterval) {
-        isInterval = false;
-        isLongInterval = true;
-        duration = const Duration(seconds: 10);
-        totalDuration = duration.inSeconds;
-        return duration;
+        return setLongIntervalDuration();
       }
     }
     if (userDuration != null) {
-      isInterval = false;
-      duration = Duration(minutes: userDuration);
-      totalDuration = duration.inSeconds;
-      return duration;
+      return userDurationNotNull(userDuration);
     }
+    return userDurationNull();
+  }
+
+  Duration setIntervalDuration() {
+    isInterval = true;
+    duration = const Duration(seconds: 3);
+    totalDuration = duration.inSeconds;
+    return duration;
+  }
+
+  Duration setLongIntervalDuration() {
     isInterval = false;
-    duration = const Duration(seconds: 25);
+    isLongInterval = true;
+    duration = const Duration(seconds: 5);
+    totalDuration = duration.inSeconds;
+    return duration;
+  }
+
+  Duration userDurationNotNull(int userDuration) {
+    isInterval = false;
+    duration = Duration(minutes: userDuration);
+    totalDuration = duration.inSeconds;
+    return duration;
+  }
+
+  Duration userDurationNull() {
+    isInterval = false;
+    duration = const Duration(seconds: 6);
     totalDuration = duration.inSeconds;
     return duration;
   }
