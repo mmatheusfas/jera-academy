@@ -57,6 +57,9 @@ class _TimerPageState extends State<TimerPage> {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height - AppBar().preferredSize.height;
+    var width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue.shade900,
@@ -92,8 +95,8 @@ class _TimerPageState extends State<TimerPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            const SizedBox(
-              height: 30,
+            SizedBox(
+              height: height * 0.05,
             ),
             Container(
                 padding: const EdgeInsets.all(5),
@@ -107,14 +110,14 @@ class _TimerPageState extends State<TimerPage> {
                     ),
                   );
                 })),
-            const SizedBox(
-              height: 50,
+            SizedBox(
+              height: height * 0.06,
             ),
             Stack(
               children: [
                 Container(
-                  width: 300,
-                  height: 300,
+                  width: width * 0.62,
+                  height: height * 0.37,
                   padding: const EdgeInsets.all(5),
                   child: Observer(builder: (context) {
                     var value = controller.duration.inSeconds.toDouble() / controller.totalDuration.toDouble();
@@ -127,8 +130,8 @@ class _TimerPageState extends State<TimerPage> {
                   }),
                 ),
                 Positioned(
-                  right: 72,
-                  bottom: 110,
+                  right: 64,
+                  bottom: 108,
                   child: Observer(builder: (_) {
                     return Text(
                       "${controller.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:${controller.duration.inSeconds.remainder(60).toString().padLeft(2, '0')}",
@@ -142,8 +145,8 @@ class _TimerPageState extends State<TimerPage> {
                 )
               ],
             ),
-            const SizedBox(
-              height: 100,
+            SizedBox(
+              height: height * 0.08,
             ),
             Expanded(
               child: Container(
@@ -201,8 +204,8 @@ class _TimerPageState extends State<TimerPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 30,
+                    SizedBox(
+                      height: height * 0.04,
                     ),
                     Observer(builder: (context) {
                       return Text(
