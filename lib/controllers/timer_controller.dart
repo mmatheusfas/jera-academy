@@ -64,16 +64,20 @@ abstract class TimerControllerBase with Store {
   }
 
   startTimer(TimerModel timerModel) {
-    timerModel.timerStarted = !timerModel.timerStarted;
     notificationController.initializeNotification(notification);
     stopAudio();
 
-    if (timerModel.itsPaused) {
-      timerModel.itsPaused = false;
-      countDownTimer = Timer.periodic(const Duration(seconds: 1), (_) => decrementSeconds(timerModel));
+    if (timerModel.timerStarted) {
+      return;
     } else {
-      initializeDuration(timerModel.timerGoal, isInterval ? true : false);
-      countDownTimer = Timer.periodic(const Duration(seconds: 1), (_) => decrementSeconds(timerModel));
+      timerModel.timerStarted = !timerModel.timerStarted;
+      if (timerModel.itsPaused) {
+        timerModel.itsPaused = false;
+        countDownTimer = Timer.periodic(const Duration(seconds: 1), (_) => decrementSeconds(timerModel));
+      } else {
+        initializeDuration(timerModel.timerGoal, isInterval ? true : false);
+        countDownTimer = Timer.periodic(const Duration(seconds: 1), (_) => decrementSeconds(timerModel));
+      }
     }
   }
 
@@ -101,7 +105,7 @@ abstract class TimerControllerBase with Store {
     var seconds = duration.inSeconds;
     seconds--;
 
-    if (seconds == 0) {
+    if (seconds <= 0) {
       dynamicNotification();
       playAudio();
       incrementCyle();
