@@ -138,19 +138,19 @@ abstract class TimerControllerBase with Store {
     }
   }
 
+  showNotification(String body) {
+    notificationController.showNotification(
+      title: "Timer",
+      body: body,
+      plugin: notification,
+    );
+  }
+
   dynamicNotification() {
     if (isInterval || isLongInterval) {
-      notificationController.showNotification(
-        title: "Timer",
-        body: "Your interval time has ended, it's time to focus",
-        plugin: notification,
-      );
+      showNotification("Your interval time has ended, it's time to focus");
     } else {
-      notificationController.showNotification(
-        title: "Timer",
-        body: "Your focus time has ended, it's time to relax",
-        plugin: notification,
-      );
+      showNotification("Your focus time has ended, it's time to relax");
     }
   }
 
