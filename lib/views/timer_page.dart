@@ -13,7 +13,11 @@ class TimerPage extends StatefulWidget {
 }
 
 class _TimerPageState extends State<TimerPage> {
-  openDialog(BuildContext context, TimerModel timerModel, TimerController controller) {
+  TimerController controller = TimerController();
+  Duration duration = const Duration(minutes: 25);
+  TimerModel userModel = TimerModel();
+
+  void openDialog(BuildContext context, TimerModel timerModel, TimerController controller) {
     showDialog(
       context: context,
       builder: (context) {
@@ -46,11 +50,13 @@ class _TimerPageState extends State<TimerPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    Duration duration = const Duration(minutes: 25);
-    TimerController controller = TimerController();
-    TimerModel userModel = TimerModel();
+  void initState() {
+    super.initState();
+    controller.initializeDuration(userModel.timerGoal, false);
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue.shade900,
@@ -64,7 +70,7 @@ class _TimerPageState extends State<TimerPage> {
               );
               if (result != null) {
                 userModel.timerGoal = result.inMinutes;
-                controller.initializeDuration(userModel.timerGoal, false, userModel);
+                controller.initializeDuration(userModel.timerGoal, false);
               }
             },
             icon: const Icon(
@@ -111,27 +117,28 @@ class _TimerPageState extends State<TimerPage> {
                   height: 300,
                   padding: const EdgeInsets.all(5),
                   child: Observer(builder: (context) {
-                    return const CircularProgressIndicator(
-                      color: Colors.white54,
-                      value: .3,
+                    return CircularProgressIndicator(
+                      color: Colors.white,
+                      value: controller.duration.inSeconds.toDouble() / controller.totalDuration.toDouble(),
                       backgroundColor: Colors.grey,
                       strokeWidth: 15,
                     );
                   }),
                 ),
                 Positioned(
-                    right: 72,
-                    bottom: 110,
-                    child: Observer(builder: (_) {
-                      return Text(
-                        "${controller.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:${controller.duration.inSeconds.remainder(60).toString().padLeft(2, '0')}",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 65,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      );
-                    }))
+                  right: 72,
+                  bottom: 110,
+                  child: Observer(builder: (_) {
+                    return Text(
+                      "${controller.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:${controller.duration.inSeconds.remainder(60).toString().padLeft(2, '0')}",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 65,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  }),
+                )
               ],
             ),
             const SizedBox(
