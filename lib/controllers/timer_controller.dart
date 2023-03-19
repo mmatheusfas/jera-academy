@@ -23,7 +23,7 @@ abstract class TimerControllerBase with Store {
   @observable
   bool isInterval = false;
   @observable
-  Duration duration = const Duration(seconds: 4);
+  Duration duration = const Duration();
   @observable
   int totalCycles = 0;
 
@@ -31,14 +31,14 @@ abstract class TimerControllerBase with Store {
   Duration initializeDuration(int? userDuration, bool isIntervalParam) {
     if (isIntervalParam && auxiliar % 2 != 0) {
       isInterval = true;
-      duration = const Duration(seconds: 2);
+      duration = const Duration(seconds: 5);
       totalDuration = duration.inSeconds;
       return duration;
     } else {
       if (cycles != 0 && cycles % 4 == 0 && isInterval) {
         isInterval = false;
         isLongInterval = true;
-        duration = const Duration(seconds: 4);
+        duration = const Duration(seconds: 10);
         totalDuration = duration.inSeconds;
         return duration;
       }
@@ -50,7 +50,7 @@ abstract class TimerControllerBase with Store {
       return duration;
     }
     isInterval = false;
-    duration = const Duration(seconds: 4);
+    duration = const Duration(seconds: 25);
     totalDuration = duration.inSeconds;
     return duration;
   }
@@ -92,6 +92,7 @@ abstract class TimerControllerBase with Store {
       initializeDuration(timerModel.timerGoal, false);
     } else {
       countDownTimer!.cancel();
+      initializeDuration(timerModel.timerGoal, false);
     }
   }
 
