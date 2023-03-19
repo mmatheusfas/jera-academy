@@ -59,9 +59,14 @@ abstract class TimerControllerBase with Store {
     await player!.play(AssetSource("alarme.wav"));
   }
 
+  stopAudio() async {
+    await player!.stop();
+  }
+
   startTimer(TimerModel timerModel) {
     timerModel.timerStarted = !timerModel.timerStarted;
     notificationController.initializeNotification(notification);
+    stopAudio();
 
     if (timerModel.itsPaused) {
       timerModel.itsPaused = false;
