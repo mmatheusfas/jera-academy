@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
+
+import 'package:pomodoro_jera/controllers/notification_controller.dart';
 import 'package:pomodoro_jera/model/timer_model.dart';
 import 'package:mobx/mobx.dart';
 part 'timer_controller.g.dart';
@@ -9,6 +12,9 @@ abstract class TimerControllerBase with Store {
   Timer? countDownTimer;
   int auxiliar = 0;
   int cycles = 0;
+  AudioPlayer? player = AudioPlayer();
+
+  NotificationController notificationController = NotificationController();
 
   @observable
   bool isLongInterval = false;
@@ -38,6 +44,10 @@ abstract class TimerControllerBase with Store {
     }
     isInterval = false;
     return duration = const Duration(seconds: 4);
+  }
+
+  playAudio() async {
+    await player!.play(AssetSource("alarme.mp3"));
   }
 
   startTimer(TimerModel timerModel) {
@@ -76,6 +86,7 @@ abstract class TimerControllerBase with Store {
     seconds--;
 
     if (seconds == 0) {
+      playAudio();
       incrementCyle();
       initializeDuration(timerModel.timerGoal, auxiliar % 2 == 0 && auxiliar != 0 ? false : true, timerModel);
       stopTimer(timerModel);
