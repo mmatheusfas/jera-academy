@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pomodoro_jera/controllers/notification_controller.dart';
 import 'package:pomodoro_jera/model/timer_model.dart';
 import 'package:mobx/mobx.dart';
@@ -13,7 +13,7 @@ abstract class TimerControllerBase with Store {
   int auxiliar = 0;
   int cycles = 0;
   AudioPlayer? player = AudioPlayer();
-
+  FlutterLocalNotificationsPlugin notification = FlutterLocalNotificationsPlugin();
   NotificationController notificationController = NotificationController();
 
   @observable
@@ -52,6 +52,7 @@ abstract class TimerControllerBase with Store {
 
   startTimer(TimerModel timerModel) {
     timerModel.timerStarted = !timerModel.timerStarted;
+    notificationController.initializeNotification(notification);
 
     if (timerModel.itsPaused) {
       timerModel.itsPaused = false;
@@ -86,6 +87,7 @@ abstract class TimerControllerBase with Store {
     seconds--;
 
     if (seconds == 0) {
+      notificationController.showNotification(title: "Timer", body: "Your timer has ended", plugin: notification);
       playAudio();
       incrementCyle();
       initializeDuration(timerModel.timerGoal, auxiliar % 2 == 0 && auxiliar != 0 ? false : true, timerModel);
