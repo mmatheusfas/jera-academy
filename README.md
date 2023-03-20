@@ -1,20 +1,21 @@
-<<<<<<< HEAD
-# pomodoro_jera
 
-A new Flutter project.
+# Jera Academy Technical Challenge
 
-## Getting Started
+Technical Challenge made for Jera Academy 2023.
 
-This project is a starting point for a Flutter application.
+## Description
 
-A few resources to get you started if this is your first Flutter project:
+This project is a Pomodoro Timer App. The main idea was to build a Pomodoro countdown app, with some features.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# Features
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-=======
-# jera-academy
->>>>>>> 4e142711d57060976c7e607d164cf692b3c6804d
+- Focus timer (25 min), interval timer (5 min) and long interval timer (10 min).
+- After 4 pomodoros the app suggests a long break.
+- Pomodoros made on the day.
+- Setting the focus time.
+- Start, pause and restart button.
+- Sound and notification when timer runs out.
+
+# Used Technologies
+  # - Framework: Flutter.
+  # - Programming language: Dart.
