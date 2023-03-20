@@ -66,6 +66,7 @@ class _TimerPageState extends State<TimerPage> {
         elevation: 0,
         actions: [
           IconButton(
+            padding: const EdgeInsets.fromLTRB(0, 10, 25, 2),
             onPressed: () async {
               var result = await showDurationPicker(
                 context: context,
@@ -77,9 +78,9 @@ class _TimerPageState extends State<TimerPage> {
               }
             },
             icon: const Icon(
-              Icons.timer,
+              Icons.watch_later,
               color: Colors.white,
-              size: 35,
+              size: 45,
             ),
           )
         ],
@@ -114,11 +115,11 @@ class _TimerPageState extends State<TimerPage> {
               height: height * 0.06,
             ),
             Stack(
+              alignment: Alignment.center,
               children: [
-                Container(
-                  width: width * 0.62,
+                SizedBox(
                   height: height * 0.37,
-                  padding: const EdgeInsets.all(5),
+                  width: width * 0.62,
                   child: Observer(builder: (context) {
                     var value = controller.duration.inSeconds.toDouble() / controller.totalDuration.toDouble();
                     return CircularProgressIndicator(
@@ -129,20 +130,16 @@ class _TimerPageState extends State<TimerPage> {
                     );
                   }),
                 ),
-                Positioned(
-                  right: 64,
-                  bottom: 108,
-                  child: Observer(builder: (_) {
-                    return Text(
-                      "${controller.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:${controller.duration.inSeconds.remainder(60).toString().padLeft(2, '0')}",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 65,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    );
-                  }),
-                )
+                Observer(builder: (_) {
+                  return Text(
+                    "${controller.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:${controller.duration.inSeconds.remainder(60).toString().padLeft(2, '0')}",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 65,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                }),
               ],
             ),
             SizedBox(
